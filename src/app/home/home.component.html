@@ -1,4 +1,33 @@
 <div>
-  s
-  
+  <h2>Domain users</h2>
+
+  <div *ngIf="users && units">
+
+    <table class="table">
+      <tr>
+        <th>Email</th>
+        <th>Unit</th>
+        <th>Actions</th>
+      </tr>
+
+    <tr *ngFor="let user of users">
+      <td>
+        {{ user.primaryEmail }}
+      </td>
+      <td>
+        {{ user.orgUnitPath }}
+      </td>
+      <td>
+        <button [disabled]="loading" class="btn btn-outline-secondary mr-2" type="button" (click)="uploadContacts(user.primaryEmail)">
+          Upload Contacts
+        </button>
+
+        <button [disabled]="loading" class="btn btn-outline-secondary" type="button" (click)="deleteContacts(user.primaryEmail)">
+          Delete Contacts
+        </button>
+      </td>
+    </tr>
+
+    </table>
+  </div>
 </div>
