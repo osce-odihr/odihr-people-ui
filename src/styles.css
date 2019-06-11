@@ -1,1 +1,35 @@
 /* You can add global styles to this file, and also import other style files */
+
+/**Action loader **/
+.actn-loader:before,
+.actn-loader:after,
+.actn-loader {
+    border-radius: 50%;
+    animation-fill-mode: both;
+    animation: actn-loader 1.5s infinite ease-in-out;
+}
+
+.actn-loader {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    color: inherit;
+    vertical-align: middle;
+    pointer-events: none;
+    color: #fff;
+    position: relative;
+    transform: translateZ(0);
+    animation-delay: -0.16s;
+    top: -1em;
+}
+
+@keyframes actn-loader {
+    0%,
+    80%,
+    100% {
+        box-shadow: 0 1em 0 -1em;
+    }
+    40% {
+        box-shadow: 0 1em 0 -.2em;
+    }
+}
