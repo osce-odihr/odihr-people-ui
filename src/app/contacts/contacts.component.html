@@ -2,7 +2,7 @@
 
 <div class="card col-8 offset-4 mb-3">
   <div class="card-body">
-    <h5 i18 class="mb-4">Upload Contacts to {{ userEmail }}</h5>
+    <h5 i18 class="mb-2">Upload Contacts to {{ userEmail }}</h5>
     <form [formGroup]="contactsUploadForm" (ngSubmit)="onSubmit()" method="post">
       <div class="form-group row">
         <label for="contactsFileUrl" class="col-4" i18n>Contacts File URL</label>
