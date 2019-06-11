@@ -27,9 +27,9 @@
   <tr>
     <th width="10%">Pic</th>
     <th width="30%">Name</th>
-    <th width="25%">Emails</th>
-    <th width="25%">Number</th>
-    <th width="10%">Groups</th>
+    <th width="20%">Emails</th>
+    <th width="20%">Number</th>
+    <th width="20%">Groups</th>
   </tr>
 
   <tr *ngFor="let person of contacts">
@@ -58,8 +58,8 @@
       </p>
     </td>
     <td>
-      <p class="my-0 small" *ngFor="let membership of person.memberships">
-        {{ membership.contactGroupMembership.contactGroupId}}
+      <p class="my-0" *ngFor="let membership of person.memberships">
+        {{ getGroupName(membership.contactGroupMembership.contactGroupResourceName)}}
       </p>
     </td>
   </tr>

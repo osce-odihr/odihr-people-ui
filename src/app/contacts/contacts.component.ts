@@ -5,6 +5,7 @@ import {Contact} from '../_models/contact';
 import {first} from 'rxjs/operators';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ContactGroup} from '../_models/contact-group';
 
 @Component({
   selector: 'app-contacts',
@@ -17,6 +18,8 @@ export class ContactsComponent implements OnInit {
   private submitted = false;
   private userEmail: string;
   private contacts: Contact[];
+  private contactGroups: ContactGroup[];
+  private contactGroupsIndex: Map<string, string>;
 
   constructor(
       private formBuilder: FormBuilder,
@@ -44,6 +47,14 @@ export class ContactsComponent implements OnInit {
             apiResponse => {
               if (apiResponse.ok) {
                 this.contacts = apiResponse.contacts;
+                this.contactGroups = apiResponse.contactGroups;
+
+                this.contactGroupsIndex = new Map<string, string>();
+                this.contactGroups.forEach(
+                  (group) => {
+                    this.contactGroupsIndex.set(group.resourceName, group.formattedName);
+                  }
+                 );
               } else {
                 this.alertService.error(apiResponse.msg);
               }
@@ -54,6 +65,11 @@ export class ContactsComponent implements OnInit {
               this.loading = false;
             });
   }
+
+  getGroupName(resourceName: string) {
+      return this.contactGroupsIndex.get(resourceName);
+  }
+
 
     onSubmit() {
         this.submitted = true;
