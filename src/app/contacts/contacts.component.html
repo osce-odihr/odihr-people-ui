@@ -1,11 +1,11 @@
 <h3 class="my-4">Manage Contacts for {{ userEmail }} <small><a [routerLink]="['/home']">back</a></small></h3>
 
-<div class="card col-8 offset-4 mb-3">
+<div class="card col-8 offset-4 mb-3" *ngIf="!loading || submitted">
   <div class="card-body">
-    <h5 i18 class="mb-2">Upload Contacts to {{ userEmail }}</h5>
+    <h5 i18 class="mb-3">Upload Contacts to {{ userEmail }}</h5>
     <form [formGroup]="contactsUploadForm" (ngSubmit)="onSubmit()" method="post">
       <div class="form-group row">
-        <label for="contactsFileUrl" class="col-4" i18n>Contacts File URL</label>
+        <label for="contactsFileUrl" class="col-4" i18n>Google Sheet URL</label>
         <input type="text" id="contactsFileUrl" formControlName="contactsFileUrl" class="form-control col-8"
                [ngClass]="{ 'is-invalid': submitted && contactsUploadForm.controls.contactsFileUrl.errors }"/>
         <div *ngIf="submitted && contactsUploadForm.controls.contactsFileUrl.errors" class="invalid-feedback col-12">
@@ -26,9 +26,9 @@
 <table class="table" *ngIf="contacts">
   <tr>
     <th width="10%">Pic</th>
-    <th width="35%">Name</th>
+    <th width="30%">Name</th>
     <th width="25%">Emails</th>
-    <th width="20%">Number</th>
+    <th width="25%">Number</th>
     <th width="10%">Groups</th>
   </tr>
 
@@ -45,14 +45,14 @@
     </td>
     <td>
       <p class="my-2" *ngFor="let email of person.emailAddresses">
-        {{ email.value}}
+        <span [ngClass]="{ 'font-weight-bold': email.metadata.primary}">{{ email.value}}</span>
         <br>
         <small class="badge" [ngClass]="{ 'badge-primary': email.type === 'home', 'badge-danger': email.type === 'other'}"> {{ email.formattedType }}</small>
       </p>
     </td>
     <td>
       <p class="my-2" *ngFor="let phoneNumber of person.phoneNumbers">
-        {{ phoneNumber.value}}
+        <span [ngClass]="{ 'font-weight-bold': phoneNumber.metadata.primary}">{{ phoneNumber.value }}</span>
         <br>
         <small class="badge" [ngClass]="{ 'badge-primary': phoneNumber.type === 'mobile', 'badge-warning': phoneNumber.type === 'work', 'badge-info': phoneNumber.type === 'home', 'badge-danger': phoneNumber.type === 'other'}"> {{ phoneNumber.formattedType}}</small>
       </p>
