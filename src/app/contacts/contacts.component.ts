@@ -64,6 +64,22 @@ export class ContactsComponent implements OnInit {
         }
 
         this.loading = true;
+
+        this.userService.uploadContacts(this.userEmail, this.contactsUploadForm.controls.contactsFileUrl.value)
+            .pipe(first())
+            .subscribe(
+                apiResponse => {
+                    if (apiResponse.ok) {
+                        this.contacts = apiResponse.contacts;
+                    } else {
+                        this.alertService.error(apiResponse.msg);
+                    }
+                    this.loading = false;
+                },
+                error => {
+                    this.alertService.error(error.statusText);
+                    this.loading = false;
+                });
     }
 
 }
