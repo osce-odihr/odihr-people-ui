@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {UserService} from '../_services/user.service';
 import {User} from '../_models/user';
-import {first} from 'rxjs/operators';
+import {filter, first} from 'rxjs/operators';
 import {AlertService} from '../_services/alert.service';
 import {OrgUnit} from '../_models/org-unit';
 
@@ -45,6 +45,18 @@ export class HomeComponent implements OnInit {
 
     private uploadContacts(email: string) {
         alert('ok upload!');
+    }
+
+    filterUser(unit: string) {
+        const result: User[] = [];
+
+        for (const index in this.users) {
+            if (this.users[index].orgUnitPath === unit) {
+                result.push(this.users[index]);
+            }
+        }
+
+        return result;
     }
 
 }
