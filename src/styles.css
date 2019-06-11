@@ -1,5 +1,34 @@
 /* You can add global styles to this file, and also import other style files */
 
+.loader-placeholder {
+    padding: 20rem 2rem;
+}
+
+/** Page loader **/
+.page-loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 15px solid rgba(180, 180, 180, .2);
+    border-top: 15px solid black;
+    animation: animate 1s infinite linear;
+    z-index: 9999;
+}
+
+@keyframes animate {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    100% {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+
 /**Action loader **/
 .actn-loader:before,
 .actn-loader:after,

@@ -21,6 +21,8 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.loading = true;
+
     this.userService.getUsers()
         .pipe(first())
         .subscribe(

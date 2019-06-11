@@ -1,0 +1,49 @@
+<h3 class="my-4">Manage Contacts for {{ userEmail }} <small><a [routerLink]="['/home']">back</a></small></h3>
+
+<table class="table" *ngIf="contacts">
+  <tr>
+    <th width="10%">Pic</th>
+    <th width="30%">Name</th>
+    <th width="30%">Emails</th>
+    <th width="30%">Number</th>
+  </tr>
+
+  <tr *ngFor="let person of contacts">
+    <td>
+      <p>
+        <img src="{{ person.photos[0].url}}" class="img-thumbnail">
+      </p>
+    </td>
+    <td>
+      <p *ngFor="let name of person.names">
+        {{ name.displayNameLastFirst}}
+      </p>
+    </td>
+    <td>
+      <p class="my-2" *ngFor="let email of person.emailAddresses">
+        {{ email.value}}
+        <br>
+        <small class="badge" [ngClass]="{ 'badge-primary': email.type === 'home', 'badge-danger': email.type === 'other'}"> {{ email.formattedType }}</small>
+      </p>
+    </td>
+    <td>
+      <p class="my-2" *ngFor="let phoneNumber of person.phoneNumbers">
+        {{ phoneNumber.value}}
+        <br>
+        <small class="badge" [ngClass]="{ 'badge-primary': phoneNumber.type === 'mobile', 'badge-warning': phoneNumber.type === 'work', 'badge-info': phoneNumber.type === 'home', 'badge-danger': phoneNumber.type === 'other'}"> {{ phoneNumber.formattedType}}</small>
+      </p>
+    </td>
+  </tr>
+</table>
+
+<div class="alert alert-warning" *ngIf="!loading && !contacts">Contacts are empty</div>
+
+<div *ngIf="loading">
+  <div class="loader-placeholder">
+    <div class="row">
+      <!-- loader -->
+        <div class="page-loader"></div>
+      <!-- /loader -->
+    </div>
+  </div>
+</div>

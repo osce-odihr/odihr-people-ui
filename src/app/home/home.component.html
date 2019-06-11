@@ -53,18 +53,12 @@
               <p class="m-0">changePasswordAtLogin: {{ user.changePasswordAtNextLogin }}</p>
             </td>
             <td>
-              <p class="my-1">
-                <button class="btn btn-sm btn-outline-primary" type="button" routerLink="/contacts?email={{ user.primaryEmail }}">
-                  Manage Contacts
-                </button>
-              </p>
+              <button class="mr-2 btn btn-sm btn-outline-primary" type="button" [routerLink]="['/contacts']" [queryParams]="{userEmail: user.primaryEmail}">
+                Manage Contacts
+              </button>
 
               <button [disabled]="loading" class="btn btn-sm btn-outline-secondary mr-2" type="button" (click)="uploadContacts(user.primaryEmail)">
                 Upload Contacts
-              </button>
-
-              <button [disabled]="loading" class="btn btn-sm btn-outline-secondary" type="button" (click)="deleteContacts(user.primaryEmail)">
-                Delete Contacts
               </button>
             </td>
           </tr>
@@ -104,12 +98,12 @@
               <p class="m-0">changePasswordAtLogin: {{ user.changePasswordAtNextLogin }}</p>
             </td>
             <td>
-              <button [disabled]="loading" class="btn btn-sm btn-outline-secondary mr-2" type="button" (click)="uploadContacts(user.primaryEmail)">
-                Upload Contacts
+              <button class="mr-2 btn btn-sm btn-outline-primary" type="button" [routerLink]="['/contacts']" [queryParams]="{userEmail: user.primaryEmail}">
+                Manage Contacts
               </button>
 
-              <button [disabled]="loading" class="btn btn-sm btn-outline-secondary" type="button" (click)="deleteContacts(user.primaryEmail)">
-                Delete Contacts
+              <button [disabled]="loading" class="btn btn-sm btn-outline-secondary mr-2" type="button" (click)="uploadContacts(user.primaryEmail)">
+                Upload Contacts
               </button>
             </td>
           </tr>
@@ -150,12 +144,12 @@
               <p class="m-0">changePasswordAtLogin: {{ user.changePasswordAtNextLogin }}</p>
             </td>
             <td>
-              <button [disabled]="loading" class="btn btn-sm btn-outline-secondary mr-2" type="button" (click)="uploadContacts(user.primaryEmail)">
-                Upload Contacts
+              <button class="mr-2 btn btn-sm btn-outline-primary" type="button" [routerLink]="['/contacts']" [queryParams]="{userEmail: user.primaryEmail}">
+                Manage Contacts
               </button>
 
-              <button [disabled]="loading" class="btn btn-sm btn-outline-secondary" type="button" (click)="deleteContacts(user.primaryEmail)">
-                Delete Contacts
+              <button [disabled]="loading" class="btn btn-sm btn-outline-secondary mr-2" type="button" (click)="uploadContacts(user.primaryEmail)">
+                Upload Contacts
               </button>
             </td>
           </tr>
@@ -196,12 +190,12 @@
               <p class="m-0">changePasswordAtLogin: {{ user.changePasswordAtNextLogin }}</p>
             </td>
             <td>
-              <button [disabled]="loading" class="btn btn-sm btn-outline-secondary mr-2" type="button" (click)="uploadContacts(user.primaryEmail)">
-                Upload Contacts
+              <button class="mr-2 btn btn-sm btn-outline-primary" type="button" [routerLink]="['/contacts']" [queryParams]="{userEmail: user.primaryEmail}">
+                Manage Contacts
               </button>
 
-              <button [disabled]="loading" class="btn btn-sm btn-outline-secondary" type="button" (click)="deleteContacts(user.primaryEmail)">
-                Delete Contacts
+              <button [disabled]="loading" class="btn btn-sm btn-outline-secondary mr-2" type="button" (click)="uploadContacts(user.primaryEmail)">
+                Upload Contacts
               </button>
             </td>
           </tr>
@@ -242,12 +236,12 @@
               <p class="m-0">changePasswordAtLogin: {{ user.changePasswordAtNextLogin }}</p>
             </td>
             <td>
-              <button [disabled]="loading" class="btn btn-sm btn-outline-secondary mr-2" type="button" (click)="uploadContacts(user.primaryEmail)">
-                Upload Contacts
+              <button class="mr-2 btn btn-sm btn-outline-primary" type="button" [routerLink]="['/contacts']" [queryParams]="{userEmail: user.primaryEmail}">
+                Manage Contacts
               </button>
 
-              <button [disabled]="loading" class="btn btn-sm btn-outline-secondary" type="button" (click)="deleteContacts(user.primaryEmail)">
-                Delete Contacts
+              <button [disabled]="loading" class="btn btn-sm btn-outline-secondary mr-2" type="button" (click)="uploadContacts(user.primaryEmail)">
+                Upload Contacts
               </button>
             </td>
           </tr>
@@ -256,6 +250,15 @@
       </div>
     </div>
 
+  </div>
+</div>
 
+<div *ngIf="loading">
+  <div class="loader-placeholder">
+    <div class="row">
+      <!-- loader -->
+      <div class="page-loader"></div>
+      <!-- /loader -->
+    </div>
   </div>
 </div>

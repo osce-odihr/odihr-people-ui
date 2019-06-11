@@ -8,13 +8,15 @@ import { IndexComponent } from './index/index.component';
 import { AlertComponent } from './alert/alert.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
+import { ContactsComponent } from './contacts/contacts.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     IndexComponent,
-    AlertComponent
+    AlertComponent,
+    ContactsComponent
   ],
     imports: [
         BrowserModule,
