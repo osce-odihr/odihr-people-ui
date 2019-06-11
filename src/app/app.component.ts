@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'odihr-people-ui';
+  title = 'ODIHR Contacts Management for Google Contacts';
 }
