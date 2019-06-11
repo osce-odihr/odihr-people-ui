@@ -1,16 +1,40 @@
 <h3 class="my-4">Manage Contacts for {{ userEmail }} <small><a [routerLink]="['/home']">back</a></small></h3>
 
+<div class="card col-8 offset-4 mb-3">
+  <div class="card-body">
+    <h5 i18 class="mb-4">Upload Contacts to {{ userEmail }}</h5>
+    <form [formGroup]="contactsUploadForm" (ngSubmit)="onSubmit()" method="post">
+      <div class="form-group row">
+        <label for="contactsFileUrl" class="col-4" i18n>Contacts File URL</label>
+        <input type="text" id="contactsFileUrl" formControlName="contactsFileUrl" class="form-control col-8"
+               [ngClass]="{ 'is-invalid': submitted && contactsUploadForm.controls.contactsFileUrl.errors }"/>
+        <div *ngIf="submitted && contactsUploadForm.controls.contactsFileUrl.errors" class="invalid-feedback col-12">
+          <div *ngIf="contactsUploadForm.controls.contactsFileUrl.errors.required" i18n>File URL is required</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <button [disabled]="loading" id="login-btn" class="btn btn-primary btn-block">
+          <span *ngIf="loading" class="actn-loader"></span>
+          <span *ngIf="!loading">Submit Upload</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <table class="table" *ngIf="contacts">
   <tr>
     <th width="10%">Pic</th>
-    <th width="30%">Name</th>
-    <th width="30%">Emails</th>
-    <th width="30%">Number</th>
+    <th width="35%">Name</th>
+    <th width="25%">Emails</th>
+    <th width="20%">Number</th>
+    <th width="10%">Groups</th>
   </tr>
 
   <tr *ngFor="let person of contacts">
     <td>
-      <p>
+      <p *ngIf="person.photos[0]">
         <img src="{{ person.photos[0].url}}" class="img-thumbnail">
       </p>
     </td>
@@ -33,12 +57,17 @@
         <small class="badge" [ngClass]="{ 'badge-primary': phoneNumber.type === 'mobile', 'badge-warning': phoneNumber.type === 'work', 'badge-info': phoneNumber.type === 'home', 'badge-danger': phoneNumber.type === 'other'}"> {{ phoneNumber.formattedType}}</small>
       </p>
     </td>
+    <td>
+      <p class="my-0 small" *ngFor="let membership of person.memberships">
+        {{ membership.contactGroupMembership.contactGroupId}}
+      </p>
+    </td>
   </tr>
 </table>
 
 <div class="alert alert-warning" *ngIf="!loading && !contacts">Contacts are empty</div>
 
-<div *ngIf="loading">
+<div *ngIf="loading && !submitted">
   <div class="loader-placeholder">
     <div class="row">
       <!-- loader -->

@@ -4,6 +4,7 @@ import {AlertService} from '../_services/alert.service';
 import {Contact} from '../_models/contact';
 import {first} from 'rxjs/operators';
 import {ActivatedRoute, Router} from '@angular/router';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-contacts',
@@ -11,11 +12,14 @@ import {ActivatedRoute, Router} from '@angular/router';
   styleUrls: ['./contacts.component.css']
 })
 export class ContactsComponent implements OnInit {
-  private loading: boolean;
+  private contactsUploadForm: FormGroup;
+  private loading = false;
+  private submitted = false;
   private userEmail: string;
   private contacts: Contact[];
 
   constructor(
+      private formBuilder: FormBuilder,
       private route: ActivatedRoute,
       private router: Router,
       private userService: UserService,
@@ -27,6 +31,10 @@ export class ContactsComponent implements OnInit {
     if (this.userEmail == null) {
       this.router.navigate(['/home']);
     }
+
+    this.contactsUploadForm = this.formBuilder.group({
+      contactsFileUrl: ['', [Validators.required]],
+    });
 
     this.loading = true;
 
@@ -46,5 +54,16 @@ export class ContactsComponent implements OnInit {
               this.loading = false;
             });
   }
+
+    onSubmit() {
+        this.submitted = true;
+
+        // stop here if form is invalid
+        if (this.contactsUploadForm.invalid) {
+            return;
+        }
+
+        this.loading = true;
+    }
 
 }

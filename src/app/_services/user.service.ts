@@ -21,4 +21,7 @@ export class UserService {
     return this.http.get<ResponseContacts>(environment.apiUrl + '/contacts?userEmail=' + email);
   }
 
+  uploadContacts(email: string, file: string) {
+    return this.http.get<ResponseContacts>(environment.apiUrl + '/contactsUpload?userEmail=' + email + '&contactsFile=' + file);
+  }
 }
