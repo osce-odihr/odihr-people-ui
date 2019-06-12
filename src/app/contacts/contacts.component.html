@@ -55,7 +55,7 @@
   <tr *ngFor="let person of contacts">
     <td>
       <p *ngIf="person.photos[0]">
-        <img src="{{ person.photos[0].url}}" class="img-thumbnail">
+        <img src="{{ person.photos[0].url}}" class="img-fluid">
       </p>
     </td>
     <td>
@@ -83,8 +83,9 @@
       </p>
     </td>
     <td>
-      <button class="mr-2 btn btn-sm btn-outline-danger" type="button" (click)="deletePersonFromContacts(userEmail, person.resourceName)">
-        Delete
+      <button class="mr-2 btn btn-sm btn-danger" [disabled]="loadingDelete === person.resourceName" type="button" (click)="deletePersonFromContacts(userEmail, person.resourceName)">
+        <span *ngIf="loadingDelete === person.resourceName" class="actn-loader"></span>
+        <span *ngIf="loadingDelete !== person.resourceName">Delete</span>
       </button>
     </td>
   </tr>

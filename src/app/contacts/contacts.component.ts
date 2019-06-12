@@ -16,6 +16,7 @@ import {ResponseContacts} from '../_models/response-contacts';
 export class ContactsComponent implements OnInit {
   contactsUploadForm: FormGroup;
   loading = false;
+  loadingDelete: string;
   submitted = false;
   userEmail: string;
   contacts: Contact[];
@@ -92,6 +93,7 @@ export class ContactsComponent implements OnInit {
     }
 
     deletePersonFromContacts(userEmail: string, resourceName: string) {
+        this.loadingDelete = resourceName;
 
         this.userService.deletePersonFromContacts(userEmail, resourceName)
             .pipe(first())
@@ -102,9 +104,11 @@ export class ContactsComponent implements OnInit {
                     } else {
                         this.alertService.error(apiResponse.msg);
                     }
+                    this.loadingDelete = null;
                 },
                 error => {
                     this.alertService.error(error.statusText);
+                    this.loadingDelete = null;
                 });
     }
 
