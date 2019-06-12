@@ -13,13 +13,13 @@ import {ContactGroup} from '../_models/contact-group';
   styleUrls: ['./contacts.component.css']
 })
 export class ContactsComponent implements OnInit {
-  private contactsUploadForm: FormGroup;
-  private loading = false;
-  private submitted = false;
-  private userEmail: string;
-  private contacts: Contact[];
-  private contactGroups: ContactGroup[];
-  private contactGroupsIndex: Map<string, string>;
+  contactsUploadForm: FormGroup;
+  loading = false;
+  submitted = false;
+  userEmail: string;
+  contacts: Contact[];
+  contactGroups: ContactGroup[];
+  contactGroupsIndex: Map<string, string>;
 
   constructor(
       private formBuilder: FormBuilder,

@@ -11,9 +11,9 @@ import {OrgUnit} from '../_models/org-unit';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  private loading: boolean;
-  private users: User[];
-  private units: OrgUnit[];
+  loading: boolean;
+  users: User[];
+  units: OrgUnit[];
 
   constructor(
       private userService: UserService,
