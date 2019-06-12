@@ -24,4 +24,8 @@ export class UserService {
   uploadContacts(email: string, file: string) {
     return this.http.get<ResponseContacts>(environment.apiUrl + '/contactsUpload?userEmail=' + email + '&contactsFile=' + file);
   }
+
+  deletePersonFromContacts(userEmail: string, resourceName: string) {
+    return this.http.get<ResponseContacts>(environment.apiUrl + '/contactDelete?userEmail=' + userEmail + '&resourceName=' + resourceName);
+  }
 }

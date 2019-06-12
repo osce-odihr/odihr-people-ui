@@ -6,6 +6,7 @@ import {first} from 'rxjs/operators';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ContactGroup} from '../_models/contact-group';
+import {ResponseContacts} from '../_models/response-contacts';
 
 @Component({
   selector: 'app-contacts',
@@ -46,15 +47,7 @@ export class ContactsComponent implements OnInit {
         .subscribe(
             apiResponse => {
               if (apiResponse.ok) {
-                this.contacts = apiResponse.contacts;
-                this.contactGroups = apiResponse.contactGroups;
-
-                this.contactGroupsIndex = new Map<string, string>();
-                this.contactGroups.forEach(
-                  (group) => {
-                    this.contactGroupsIndex.set(group.resourceName, group.formattedName);
-                  }
-                 );
+                  this.loadContactsResponse(apiResponse);
               } else {
                 this.alertService.error(apiResponse.msg);
               }
@@ -86,7 +79,7 @@ export class ContactsComponent implements OnInit {
             .subscribe(
                 apiResponse => {
                     if (apiResponse.ok) {
-                        this.contacts = apiResponse.contacts;
+                        this.loadContactsResponse(apiResponse);
                     } else {
                         this.alertService.error(apiResponse.msg);
                     }
@@ -96,6 +89,35 @@ export class ContactsComponent implements OnInit {
                     this.alertService.error(error.statusText);
                     this.loading = false;
                 });
+    }
+
+    deletePersonFromContacts(userEmail: string, resourceName: string) {
+
+        this.userService.deletePersonFromContacts(userEmail, resourceName)
+            .pipe(first())
+            .subscribe(
+                apiResponse => {
+                    if (apiResponse.ok) {
+                        this.loadContactsResponse(apiResponse);
+                    } else {
+                        this.alertService.error(apiResponse.msg);
+                    }
+                },
+                error => {
+                    this.alertService.error(error.statusText);
+                });
+    }
+
+    private loadContactsResponse(apiResponse: ResponseContacts) {
+        this.contacts = apiResponse.contacts;
+        this.contactGroups = apiResponse.contactGroups;
+
+        this.contactGroupsIndex = new Map<string, string>();
+        this.contactGroups.forEach(
+            (group) => {
+                this.contactGroupsIndex.set(group.resourceName, group.formattedName);
+            }
+        );
     }
 
 }

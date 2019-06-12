@@ -1,35 +1,55 @@
 <h3 class="my-4">Manage Contacts for {{ userEmail }} <small><a [routerLink]="['/home']">back</a></small></h3>
 
-<div class="card col-8 offset-4 mb-3" *ngIf="!loading || submitted">
-  <div class="card-body">
-    <h5 i18 class="mb-3">Upload Contacts to {{ userEmail }}</h5>
-    <form [formGroup]="contactsUploadForm" (ngSubmit)="onSubmit()" method="post">
-      <div class="form-group row">
-        <label for="contactsFileUrl" class="col-4" i18n>Google Sheet URL</label>
-        <input type="text" id="contactsFileUrl" formControlName="contactsFileUrl" class="form-control col-8"
-               [ngClass]="{ 'is-invalid': submitted && contactsUploadForm.controls.contactsFileUrl.errors }"/>
-        <div *ngIf="submitted && contactsUploadForm.controls.contactsFileUrl.errors" class="invalid-feedback col-12">
-          <div *ngIf="contactsUploadForm.controls.contactsFileUrl.errors.required" i18n>File URL is required</div>
+<div class="row mb-3">
+  <div class="col-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 i18 class="mb-3">Contact Groups</h5>
+        <div class="row small">
+          <div class="col-6 row" *ngFor="let group of contactGroups">
+            <div class="col-8">{{  group.formattedName  }}</div>
+            <div class="col-4">{{ group.memberCount }}</div>
+          </div>
         </div>
       </div>
-
-      <div class="form-group">
-        <button [disabled]="loading" id="login-btn" class="btn btn-primary btn-block">
-          <span *ngIf="loading" class="actn-loader"></span>
-          <span *ngIf="!loading">Submit Upload</span>
-        </button>
-      </div>
-    </form>
+    </div>
   </div>
+
+  <div class="col-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 i18 class="mb-3">Upload Contacts to {{ userEmail }}</h5>
+        <form [formGroup]="contactsUploadForm" (ngSubmit)="onSubmit()" method="post">
+          <div class="form-group row">
+            <label for="contactsFileUrl" class="col-4" i18n>Google Sheet URL</label>
+            <input type="text" id="contactsFileUrl" formControlName="contactsFileUrl" class="form-control col-8"
+                   [ngClass]="{ 'is-invalid': submitted && contactsUploadForm.controls.contactsFileUrl.errors }"/>
+            <div *ngIf="submitted && contactsUploadForm.controls.contactsFileUrl.errors" class="invalid-feedback col-12">
+              <div *ngIf="contactsUploadForm.controls.contactsFileUrl.errors.required" i18n>File URL is required</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <button [disabled]="loading" id="login-btn" class="btn btn-primary btn-block">
+              <span *ngIf="loading" class="actn-loader"></span>
+              <span *ngIf="!loading">Submit Upload</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <table class="table" *ngIf="contacts">
   <tr>
-    <th width="10%">Pic</th>
+    <th width="5%">Pic</th>
     <th width="30%">Name</th>
     <th width="20%">Emails</th>
     <th width="20%">Number</th>
-    <th width="20%">Groups</th>
+    <th width="15%">Groups</th>
+    <th width="10%">Action</th>
   </tr>
 
   <tr *ngFor="let person of contacts">
@@ -58,9 +78,14 @@
       </p>
     </td>
     <td>
-      <p class="my-0" *ngFor="let membership of person.memberships">
+      <p class="my-0 small" *ngFor="let membership of person.memberships">
         {{ getGroupName(membership.contactGroupMembership.contactGroupResourceName)}}
       </p>
+    </td>
+    <td>
+      <button class="mr-2 btn btn-sm btn-outline-danger" type="button" (click)="deletePersonFromContacts(userEmail, person.resourceName)">
+        Delete
+      </button>
     </td>
   </tr>
 </table>
