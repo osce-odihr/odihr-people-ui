@@ -28,4 +28,8 @@ export class UserService {
   deletePersonFromContacts(userEmail: string, resourceName: string) {
     return this.http.get<ResponseContacts>(environment.apiUrl + '/contactDelete?userEmail=' + userEmail + '&resourceName=' + resourceName);
   }
+
+  deleteAllFromContacts(userEmail: string) {
+    return this.http.get<ResponseContacts>(environment.apiUrl + '/contactDeleteAll?userEmail=' + userEmail);
+  }
 }

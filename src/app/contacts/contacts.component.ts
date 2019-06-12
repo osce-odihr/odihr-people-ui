@@ -16,6 +16,7 @@ import {ResponseContacts} from '../_models/response-contacts';
 export class ContactsComponent implements OnInit {
   contactsUploadForm: FormGroup;
   loading = false;
+  loadingDeleteAll = false;
   loadingDelete: string;
   submitted = false;
   userEmail: string;
@@ -89,6 +90,28 @@ export class ContactsComponent implements OnInit {
                 error => {
                     this.alertService.error(error.statusText);
                     this.loading = false;
+                });
+    }
+
+
+    deleteALLFromContacts(userEmail: string) {
+        this.loadingDeleteAll = true;
+
+        this.userService.deleteAllFromContacts(userEmail)
+            .pipe(first())
+            .subscribe(
+                apiResponse => {
+                    if (apiResponse.ok) {
+                        this.loadContactsResponse(apiResponse);
+                    } else {
+                        this.alertService.error(apiResponse.msg);
+                    }
+                    this.loadingDeleteAll = false;
+                },
+                error => {
+                    this.alertService.error(error.statusText);
+
+                    this.loadingDeleteAll = false;
                 });
     }
 
