@@ -7,8 +7,8 @@
         <h5 i18 class="mb-3">Contact Groups</h5>
         <div class="row small">
           <div class="col-6 row" *ngFor="let group of contactGroups">
-            <div class="col-8">{{  group.formattedName  }}</div>
-            <div class="col-4">{{ group.memberCount }}</div>
+            <div class="col-9">{{  group.formattedName  }}</div>
+            <div class="col-3">{{ group.memberCount }}</div>
           </div>
         </div>
       </div>
@@ -21,8 +21,8 @@
         <h5 i18 class="mb-3">Upload Contacts to {{ userEmail }}</h5>
         <form [formGroup]="contactsUploadForm" (ngSubmit)="onSubmit()" method="post">
           <div class="form-group row">
-            <label for="contactsFileUrl" class="col-4" i18n>Google Sheet URL</label>
-            <input type="text" id="contactsFileUrl" formControlName="contactsFileUrl" class="form-control col-8"
+            <label for="contactsFileUrl" class="col-5" i18n>Google Sheet ID</label>
+            <input type="text" id="contactsFileUrl" formControlName="contactsFileUrl" class="form-control col-7"
                    [ngClass]="{ 'is-invalid': submitted && contactsUploadForm.controls.contactsFileUrl.errors }"/>
             <div *ngIf="submitted && contactsUploadForm.controls.contactsFileUrl.errors" class="invalid-feedback col-12">
               <div *ngIf="contactsUploadForm.controls.contactsFileUrl.errors.required" i18n>File URL is required</div>
@@ -46,7 +46,7 @@
         <h5 i18 class="mb-3">Mass Actions</h5>
         <button [disabled]="loadingDeleteAll" class="btn btn-danger btn-block" (click)="deleteALLFromContacts(userEmail)">
           <span *ngIf="loadingDeleteAll" class="actn-loader"></span>
-          <span *ngIf="!loadingDeleteAll">DELETE ALL</span>
+          <span *ngIf="!loadingDeleteAll">Delete ALL Managed</span>
         </button>
       </div>
     </div>
@@ -89,8 +89,9 @@
       </p>
     </td>
     <td>
-      <p class="my-0 small" *ngFor="let membership of person.memberships">
-        {{ getGroupName(membership.contactGroupMembership.contactGroupResourceName)}}
+      <p class="my-0" *ngFor="let membership of person.memberships">
+        <span *ngIf="getGroupName(membership.contactGroupMembership.contactGroupResourceName) === 'National Staff' || getGroupName(membership.contactGroupMembership.contactGroupResourceName) === 'Core team'" class="badge badge-success">{{ getGroupName(membership.contactGroupMembership.contactGroupResourceName) }}</span>
+        <span *ngIf="!(getGroupName(membership.contactGroupMembership.contactGroupResourceName) === 'National Staff' || getGroupName(membership.contactGroupMembership.contactGroupResourceName) === 'Core team')" class="small">{{ getGroupName(membership.contactGroupMembership.contactGroupResourceName) }}</span>
       </p>
     </td>
     <td>
