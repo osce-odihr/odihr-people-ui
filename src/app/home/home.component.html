@@ -3,220 +3,66 @@
 
     <div *ngIf="users && units">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item">
-                <a class="nav-link active" id="core-tab" data-toggle="tab" href="#core" role="tab" aria-controls="core"
-                   aria-selected="false">Core Team</a>
+            <li class="nav-item" *ngFor="let unit of units; let first = first">
+                <a class="nav-link" id="{{ unit.name }}-tab" data-toggle="tab" href="#{{ unit.name }}" role="tab"
+                   [attr.aria-controls]="unit.name"
+                   aria-selected="false" [ngClass]="{'active': first}">{{ unit.description }}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="lto-tab" data-toggle="tab" href="#lto" role="tab" aria-controls="lto"
-                   aria-selected="true">LTO</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" id="sto-tab" data-toggle="tab" href="#sto" role="tab" aria-controls="sto"
-                   aria-selected="false">STO</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" id="ns-tab" data-toggle="tab" href="#ns" role="tab" aria-controls="ns"
-                   aria-selected="false">National Staff</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" id="other-tab" data-toggle="tab" href="#other" role="tab" aria-controls="ns"
+                <a class="nav-link" id="other-tab" data-toggle="tab" href="#other" role="tab" aria-controls="other"
                    aria-selected="false">Other</a>
             </li>
         </ul>
         <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="core" role="tabpanel" aria-labelledby="core-tab">
-
-
-                <!--   CORE Team tab     -->
-                <table class="table">
-                    <tr>
-                        <th width="35%">Email</th>
-                        <th width="30%">Status</th>
-                        <th width="35%">Actions</th>
-                    </tr>
-
-                    <tr *ngFor="let user of filterUser('/CT') ">
-                        <td>
-                            {{ user.primaryEmail }}
-                            <span class="badge badge-primary" *ngIf="user.isAdmin === true">ADMIN</span>
-                        </td>
-                        <td class="small">
-                            <p class="m-0">
-                                <span class="badge badge-danger" *ngIf="user.suspended === true">Suspended</span>
-                            </p>
-                            <p class="m-0">
-                                <span class="badge badge-danger" *ngIf="user.suspended === true">Archived</span>
-                            </p>
-                            <p class="m-0">
-                                <span class="badge"
-                                      [ngClass]="{ 'badge-success': user.agreedToTerms, 'badge-danger': !user.agreedToTerms}">agreedToTerms</span>
-                            </p>
-                            <p class="m-0">
-                                <span class="badge"
-                                      [ngClass]="{ 'badge-success': user.includeInGlobalAddressList, 'badge-danger': !user.includeInGlobalAddressList}">inGlobalAddressList</span>
-                            </p>
-
-                            <p class="m-0">changePasswordAtLogin: {{ user.changePasswordAtNextLogin }}</p>
-                        </td>
-                        <td>
-                            <button class="mr-2 btn btn-sm btn-outline-primary" type="button"
-                                    [routerLink]="['/contacts']" [queryParams]="{userEmail: user.primaryEmail}">
-                                Manage Contacts
-                            </button>
-
-                            <button [disabled]="loading" class="btn btn-sm btn-outline-secondary mr-2" type="button"
-                                    (click)="uploadContacts(user.primaryEmail)">
-                                Upload Contacts
-                            </button>
-                        </td>
-                    </tr>
-                </table>
-
-
-            </div>
-            <div class="tab-pane fade" id="lto" role="tabpanel" aria-labelledby="lto-tab">
-
-                <!--   LTO tab     -->
-                <table class="table">
-                    <tr>
-                        <th width="35%">Email</th>
-                        <th width="30%">Status</th>
-                        <th width="35%">Actions</th>
-                    </tr>
-
-                    <tr *ngFor="let user of filterUser('/LTO') ">
-                        <td>
-                            {{ user.primaryEmail }}
-                            <span class="badge badge-primary" *ngIf="user.isAdmin === true">ADMIN</span>
-                        </td>
-                        <td class="small">
-                            <p class="m-0">
-                                <span class="badge badge-danger" *ngIf="user.suspended === true">Suspended</span>
-                            </p>
-                            <p class="m-0">
-                                <span class="badge badge-danger" *ngIf="user.suspended === true">Archived</span>
-                            </p>
-                            <p class="m-0">
-                                <span class="badge"
-                                      [ngClass]="{ 'badge-success': user.agreedToTerms, 'badge-danger': !user.agreedToTerms}">agreedToTerms</span>
-                            </p>
-                            <p class="m-0">
-                                <span class="badge"
-                                      [ngClass]="{ 'badge-success': user.includeInGlobalAddressList, 'badge-danger': !user.includeInGlobalAddressList}">inGlobalAddressList</span>
-                            </p>
-
-                            <p class="m-0">changePasswordAtLogin: {{ user.changePasswordAtNextLogin }}</p>
-                        </td>
-                        <td>
-                            <button class="mr-2 btn btn-sm btn-outline-primary" type="button"
-                                    [routerLink]="['/contacts']" [queryParams]="{userEmail: user.primaryEmail}">
-                                Manage Contacts
-                            </button>
-
-                            <button [disabled]="loading" class="btn btn-sm btn-outline-secondary mr-2" type="button"
-                                    (click)="uploadContacts(user.primaryEmail)">
-                                Upload Contacts
-                            </button>
-                        </td>
-                    </tr>
-                </table>
-
-
-            </div>
-            <div class="tab-pane fade" id="sto" role="tabpanel" aria-labelledby="sto-tab">
-
-
-                <!--   STO Team tab     -->
-                <table class="table">
-                    <tr>
-                        <th width="35%">Email</th>
-                        <th width="30%">Status</th>
-                        <th width="35%">Actions</th>
-                    </tr>
-
-                    <tr *ngFor="let user of filterUser('/STO') ">
-                        <td>
-                            {{ user.primaryEmail }}
-                            <span class="badge badge-primary" *ngIf="user.isAdmin === true">ADMIN</span>
-                        </td>
-                        <td class="small">
-                            <p class="m-0">
-                                <span class="badge badge-danger" *ngIf="user.suspended === true">Suspended</span>
-                            </p>
-                            <p class="m-0">
-                                <span class="badge badge-danger" *ngIf="user.suspended === true">Archived</span>
-                            </p>
-                            <p class="m-0">
-                                <span class="badge"
-                                      [ngClass]="{ 'badge-success': user.agreedToTerms, 'badge-danger': !user.agreedToTerms}">agreedToTerms</span>
-                            </p>
-                            <p class="m-0">
-                                <span class="badge"
-                                      [ngClass]="{ 'badge-success': user.includeInGlobalAddressList, 'badge-danger': !user.includeInGlobalAddressList}">inGlobalAddressList</span>
-                            </p>
-
-                            <p class="m-0">changePasswordAtLogin: {{ user.changePasswordAtNextLogin }}</p>
-                        </td>
-                        <td>
-                            <button class="mr-2 btn btn-sm btn-outline-primary" type="button"
-                                    [routerLink]="['/contacts']" [queryParams]="{userEmail: user.primaryEmail}">
-                                Manage Contacts
-                            </button>
-
-                            <button [disabled]="loading" class="btn btn-sm btn-outline-secondary mr-2" type="button"
-                                    (click)="uploadContacts(user.primaryEmail)">
-                                Upload Contacts
-                            </button>
-                        </td>
-                    </tr>
-                </table>
-
-
-            </div>
-            <div class="tab-pane fade" id="ns" role="tabpanel" aria-labelledby="ns-tab">
-
+            <div class="tab-pane fade" id="{{ unit.name }}" role="tabpanel" [attr.aria-labelledby]="unit.name + '-tab'"
+                 *ngFor="let unit of units; let first = first" [ngClass]="{'active show': first}">
 
                 <!--  National Staff tab     -->
                 <table class="table">
                     <tr>
-                        <th width="35%">Email</th>
-                        <th width="30%">Status</th>
-                        <th width="35%">Actions</th>
+                        <th width="30%">Email</th>
+                        <th width="10%">Suspended</th>
+                        <th width="10%">Archived</th>
+                        <th width="10%">Terms</th>
+                        <th width="10%">Global AddressList</th>
+                        <th width="10%">Password change <br>at login</th>
+                        <th width="20%">Actions</th>
                     </tr>
 
-                    <tr *ngFor="let user of filterUser('/NS') ">
+                    <tr *ngFor="let user of filterUser('/' + unit.name) ">
                         <td>
                             {{ user.primaryEmail }}
                             <span class="badge badge-primary" *ngIf="user.isAdmin === true">ADMIN</span>
                         </td>
                         <td class="small">
                             <p class="m-0">
-                                <span class="badge badge-danger" *ngIf="user.suspended === true">Suspended</span>
+                                {{ user.suspended }}
                             </p>
+                        </td>
+                        <td class="small">
                             <p class="m-0">
-                                <span class="badge badge-danger" *ngIf="user.suspended === true">Archived</span>
+                                {{ user.archived }}
                             </p>
+                        </td>
+                        <td class="">
                             <p class="m-0">
-                                <span class="badge"
-                                      [ngClass]="{ 'badge-success': user.agreedToTerms, 'badge-danger': !user.agreedToTerms}">agreedToTerms</span>
+                                <span class="badge badge-success" *ngIf="user.agreedToTerms">OK</span>
+                                <span class="badge badge-danger" *ngIf="!user.agreedToTerms">no</span>
                             </p>
+                        </td>
+                        <td class="small">
                             <p class="m-0">
-                                <span class="badge"
-                                      [ngClass]="{ 'badge-success': user.includeInGlobalAddressList, 'badge-danger': !user.includeInGlobalAddressList}">inGlobalAddressList</span>
+                                {{ user.includeInGlobalAddressList }}
                             </p>
+                        </td>
 
-                            <p class="m-0">changePasswordAtLogin: {{ user.changePasswordAtNextLogin }}</p>
+                        <td class="small">
+                            <p class="m-0"> {{ user.changePasswordAtNextLogin }}</p>
                         </td>
                         <td>
                             <button class="mr-2 btn btn-sm btn-outline-primary" type="button"
                                     [routerLink]="['/contacts']" [queryParams]="{userEmail: user.primaryEmail}">
                                 Manage Contacts
-                            </button>
-
-                            <button [disabled]="loading" class="btn btn-sm btn-outline-secondary mr-2" type="button"
-                                    (click)="uploadContacts(user.primaryEmail)">
-                                Upload Contacts
                             </button>
                         </td>
                     </tr>
@@ -230,9 +76,13 @@
                 <!--  Other tab     -->
                 <table class="table">
                     <tr>
-                        <th width="35%">Email</th>
-                        <th width="30%">Status</th>
-                        <th width="35%">Actions</th>
+                        <th width="30%">Email</th>
+                        <th width="10%">Suspended</th>
+                        <th width="10%">Archived</th>
+                        <th width="10%">Terms</th>
+                        <th width="10%">Global AddressList</th>
+                        <th width="10%">Password change <br>at login</th>
+                        <th width="20%">Actions</th>
                     </tr>
 
                     <tr *ngFor="let user of filterUser('/') ">
@@ -242,31 +92,33 @@
                         </td>
                         <td class="small">
                             <p class="m-0">
-                                <span class="badge badge-danger" *ngIf="user.suspended === true">Suspended</span>
+                                {{ user.suspended }}
                             </p>
+                        </td>
+                        <td class="small">
                             <p class="m-0">
-                                <span class="badge badge-danger" *ngIf="user.suspended === true">Archived</span>
+                                {{ user.archived }}
                             </p>
+                        </td>
+                        <td class="">
                             <p class="m-0">
-                                <span class="badge"
-                                      [ngClass]="{ 'badge-success': user.agreedToTerms, 'badge-danger': !user.agreedToTerms}">agreedToTerms</span>
+                                <span class="badge badge-success" *ngIf="user.agreedToTerms">OK</span>
+                                <span class="badge badge-danger" *ngIf="!user.agreedToTerms">no</span>
                             </p>
+                        </td>
+                        <td class="small">
                             <p class="m-0">
-                                <span class="badge"
-                                      [ngClass]="{ 'badge-success': user.includeInGlobalAddressList, 'badge-danger': !user.includeInGlobalAddressList}">inGlobalAddressList</span>
+                                {{ user.includeInGlobalAddressList }}
                             </p>
+                        </td>
 
-                            <p class="m-0">changePasswordAtLogin: {{ user.changePasswordAtNextLogin }}</p>
+                        <td class="small">
+                            <p class="m-0"> {{ user.changePasswordAtNextLogin }}</p>
                         </td>
                         <td>
                             <button class="mr-2 btn btn-sm btn-outline-primary" type="button"
                                     [routerLink]="['/contacts']" [queryParams]="{userEmail: user.primaryEmail}">
                                 Manage Contacts
-                            </button>
-
-                            <button [disabled]="loading" class="btn btn-sm btn-outline-secondary mr-2" type="button"
-                                    (click)="uploadContacts(user.primaryEmail)">
-                                Upload Contacts
                             </button>
                         </td>
                     </tr>
