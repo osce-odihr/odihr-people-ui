@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {UserService} from '../_services/user.service';
 import {AlertService} from '../_services/alert.service';
 import {Contact} from '../_models/contact';
@@ -9,61 +9,62 @@ import {ContactGroup} from '../_models/contact-group';
 import {ResponseContacts} from '../_models/response-contacts';
 
 @Component({
-  selector: 'app-contacts',
-  templateUrl: './contacts.component.html',
-  styleUrls: ['./contacts.component.css']
+    selector: 'app-contacts',
+    templateUrl: './contacts.component.html',
+    styleUrls: ['./contacts.component.css']
 })
 export class ContactsComponent implements OnInit {
-  contactsUploadForm: FormGroup;
-  loading = false;
-  loadingDeleteAll = false;
-  loadingDelete: string;
-  submitted = false;
-  userEmail: string;
-  contacts: Contact[];
-  contactGroups: ContactGroup[];
-  contactGroupsIndex: Map<string, string>;
+    contactsUploadForm: FormGroup;
+    loading = false;
+    loadingDeleteAll = false;
+    loadingDelete: string;
+    submitted = false;
+    userEmail: string;
+    contacts: Contact[];
+    contactGroups: ContactGroup[];
+    contactGroupsIndex: Map<string, string>;
 
-  constructor(
-      private formBuilder: FormBuilder,
-      private route: ActivatedRoute,
-      private router: Router,
-      private userService: UserService,
-      private alertService: AlertService
-  ) { }
-
-  ngOnInit() {
-    this.userEmail = this.route.snapshot.queryParams.userEmail;
-    if (this.userEmail == null) {
-      this.router.navigate(['/home']);
+    constructor(
+        private formBuilder: FormBuilder,
+        private route: ActivatedRoute,
+        private router: Router,
+        private userService: UserService,
+        private alertService: AlertService
+    ) {
     }
 
-    this.contactsUploadForm = this.formBuilder.group({
-      contactsFileUrl: ['', [Validators.required]],
-    });
+    ngOnInit() {
+        this.userEmail = this.route.snapshot.queryParams.userEmail;
+        if (this.userEmail == null) {
+            this.router.navigate(['/home']);
+        }
 
-    this.loading = true;
+        this.contactsUploadForm = this.formBuilder.group({
+            contactsFileUrl: ['', [Validators.required]],
+        });
 
-    this.userService.getContacts(this.userEmail)
-        .pipe(first())
-        .subscribe(
-            apiResponse => {
-              if (apiResponse.ok) {
-                  this.loadContactsResponse(apiResponse);
-              } else {
-                this.alertService.error(apiResponse.msg);
-              }
-              this.loading = false;
-            },
-            error => {
-              this.alertService.error(error.statusText);
-              this.loading = false;
-            });
-  }
+        this.loading = true;
 
-  getGroupName(resourceName: string) {
-      return this.contactGroupsIndex.get(resourceName);
-  }
+        this.userService.getContacts(this.userEmail)
+            .pipe(first())
+            .subscribe(
+                apiResponse => {
+                    if (apiResponse.ok) {
+                        this.loadContactsResponse(apiResponse);
+                    } else {
+                        this.alertService.error(apiResponse.msg);
+                    }
+                    this.loading = false;
+                },
+                error => {
+                    this.alertService.error(error.statusText);
+                    this.loading = false;
+                });
+    }
+
+    getGroupName(resourceName: string) {
+        return this.contactGroupsIndex.get(resourceName);
+    }
 
 
     onSubmit() {

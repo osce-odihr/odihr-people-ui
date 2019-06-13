@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {UserService} from '../_services/user.service';
 import {User} from '../_models/user';
 import {filter, first} from 'rxjs/operators';
@@ -6,40 +6,41 @@ import {AlertService} from '../_services/alert.service';
 import {OrgUnit} from '../_models/org-unit';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+    selector: 'app-home',
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  loading: boolean;
-  users: User[];
-  units: OrgUnit[];
+    loading: boolean;
+    users: User[];
+    units: OrgUnit[];
 
-  constructor(
-      private userService: UserService,
-      private alertService: AlertService
-  ) { }
+    constructor(
+        private userService: UserService,
+        private alertService: AlertService
+    ) {
+    }
 
-  ngOnInit() {
-    this.loading = true;
+    ngOnInit() {
+        this.loading = true;
 
-    this.userService.getUsers()
-        .pipe(first())
-        .subscribe(
-            apiResponse => {
-              if (apiResponse.ok) {
-                this.users = apiResponse.users;
-                this.units = apiResponse.units;
-              } else {
-                this.alertService.error(apiResponse.msg);
-              }
-              this.loading = false;
-            },
-            error => {
-              this.alertService.error(error.statusText);
-              this.loading = false;
-            });
-  }
+        this.userService.getUsers()
+            .pipe(first())
+            .subscribe(
+                apiResponse => {
+                    if (apiResponse.ok) {
+                        this.users = apiResponse.users;
+                        this.units = apiResponse.units;
+                    } else {
+                        this.alertService.error(apiResponse.msg);
+                    }
+                    this.loading = false;
+                },
+                error => {
+                    this.alertService.error(error.statusText);
+                    this.loading = false;
+                });
+    }
 
     private deleteContacts(email: string) {
         alert('ok!');

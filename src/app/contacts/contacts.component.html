@@ -1,116 +1,128 @@
-<h3 class="my-4">Manage Contacts for {{ userEmail }} <small><a [routerLink]="['/home']">back</a></small></h3>
+<h3 class="my-4">Manage Contacts for {{ userEmail }}
+    <small><a [routerLink]="['/home']">back</a></small>
+</h3>
 
 <div class="row mb-3">
-  <div class="col-5">
-    <div class="card">
-      <div class="card-body">
-        <h5 i18 class="mb-3">Contact Groups</h5>
-        <div class="row small">
-          <div class="col-6 row" *ngFor="let group of contactGroups">
-            <div class="col-9">{{  group.formattedName  }}</div>
-            <div class="col-3">{{ group.memberCount }}</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-5">
-    <div class="card">
-      <div class="card-body">
-        <h5 i18 class="mb-3">Upload Contacts to {{ userEmail }}</h5>
-        <form [formGroup]="contactsUploadForm" (ngSubmit)="onSubmit()" method="post">
-          <div class="form-group row">
-            <label for="contactsFileUrl" class="col-5" i18n>Google Sheet ID</label>
-            <input type="text" id="contactsFileUrl" formControlName="contactsFileUrl" class="form-control col-7"
-                   [ngClass]="{ 'is-invalid': submitted && contactsUploadForm.controls.contactsFileUrl.errors }"/>
-            <div *ngIf="submitted && contactsUploadForm.controls.contactsFileUrl.errors" class="invalid-feedback col-12">
-              <div *ngIf="contactsUploadForm.controls.contactsFileUrl.errors.required" i18n>File URL is required</div>
+    <div class="col-5">
+        <div class="card">
+            <div class="card-body">
+                <h5 i18 class="mb-3">Contact Groups</h5>
+                <div class="row small">
+                    <div class="col-6 row" *ngFor="let group of contactGroups">
+                        <div class="col-9">{{  group.formattedName  }}</div>
+                        <div class="col-3">{{ group.memberCount }}</div>
+                    </div>
+                </div>
             </div>
-          </div>
-
-          <div class="form-group">
-            <button [disabled]="loading" id="login-btn" class="btn btn-primary btn-block">
-              <span *ngIf="loading" class="actn-loader"></span>
-              <span *ngIf="!loading">Submit Upload</span>
-            </button>
-          </div>
-        </form>
-      </div>
+        </div>
     </div>
-  </div>
 
-  <div class="col-2">
-    <div class="card">
-      <div class="card-body">
-        <h5 i18 class="mb-3">Mass Actions</h5>
-        <button [disabled]="loadingDeleteAll" class="btn btn-danger btn-block" (click)="deleteALLFromContacts(userEmail)">
-          <span *ngIf="loadingDeleteAll" class="actn-loader"></span>
-          <span *ngIf="!loadingDeleteAll">Delete ALL Managed</span>
-        </button>
-      </div>
+    <div class="col-5">
+        <div class="card">
+            <div class="card-body">
+                <h5 i18 class="mb-3">Upload Contacts to {{ userEmail }}</h5>
+                <form [formGroup]="contactsUploadForm" (ngSubmit)="onSubmit()" method="post">
+                    <div class="form-group row">
+                        <label for="contactsFileUrl" class="col-5" i18n>Google Sheet ID</label>
+                        <input type="text" id="contactsFileUrl" formControlName="contactsFileUrl"
+                               class="form-control col-7"
+                               [ngClass]="{ 'is-invalid': submitted && contactsUploadForm.controls.contactsFileUrl.errors }"/>
+                        <div *ngIf="submitted && contactsUploadForm.controls.contactsFileUrl.errors"
+                             class="invalid-feedback col-12">
+                            <div *ngIf="contactsUploadForm.controls.contactsFileUrl.errors.required" i18n>File URL is
+                                required
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <button [disabled]="loading" id="login-btn" class="btn btn-primary btn-block">
+                            <span *ngIf="loading" class="actn-loader"></span>
+                            <span *ngIf="!loading">Submit Upload</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-  </div>
+
+    <div class="col-2">
+        <div class="card">
+            <div class="card-body">
+                <h5 i18 class="mb-3">Mass Actions</h5>
+                <button [disabled]="loadingDeleteAll" class="btn btn-danger btn-block"
+                        (click)="deleteALLFromContacts(userEmail)">
+                    <span *ngIf="loadingDeleteAll" class="actn-loader"></span>
+                    <span *ngIf="!loadingDeleteAll">Delete ALL Managed</span>
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <table class="table" *ngIf="contacts">
-  <tr>
-    <th width="5%">Pic</th>
-    <th width="30%">Name</th>
-    <th width="20%">Emails</th>
-    <th width="20%">Number</th>
-    <th width="15%">Groups</th>
-    <th width="10%">Action</th>
-  </tr>
+    <tr>
+        <th width="5%">Pic</th>
+        <th width="30%">Name</th>
+        <th width="20%">Emails</th>
+        <th width="20%">Number</th>
+        <th width="15%">Groups</th>
+        <th width="10%">Action</th>
+    </tr>
 
-  <tr *ngFor="let person of contacts">
-    <td>
-      <p *ngIf="person.photos[0]">
-        <img src="{{ person.photos[0].url}}" class="img-fluid">
-      </p>
-    </td>
-    <td>
-      <p *ngFor="let name of person.names" class="font-weight-light">
-        {{ name.displayNameLastFirst}}
-      </p>
-    </td>
-    <td>
-      <p class="mb-2" *ngFor="let email of person.emailAddresses">
-        <span [ngClass]="{ 'font-weight-bold': email.metadata.primary}">{{ email.value}}</span>
-        <br>
-        <small class="badge" [ngClass]="{ 'badge-primary': email.type === 'home', 'badge-danger': email.type === 'other'}"> {{ email.formattedType }}</small>
-      </p>
-    </td>
-    <td>
-      <p class="mb-2" *ngFor="let phoneNumber of person.phoneNumbers">
-        <span [ngClass]="{ 'font-weight-bold': phoneNumber.metadata.primary}">{{ phoneNumber.value }}</span>
-        <br>
-        <small class="badge" [ngClass]="{ 'badge-primary': phoneNumber.type === 'mobile', 'badge-warning': phoneNumber.type === 'work', 'badge-info': phoneNumber.type === 'home', 'badge-danger': phoneNumber.type === 'other'}"> {{ phoneNumber.formattedType}}</small>
-      </p>
-    </td>
-    <td>
-      <p class="my-0" *ngFor="let membership of person.memberships">
-        <span *ngIf="getGroupName(membership.contactGroupMembership.contactGroupResourceName) === 'National Staff' || getGroupName(membership.contactGroupMembership.contactGroupResourceName) === 'Core team'" class="badge badge-success">{{ getGroupName(membership.contactGroupMembership.contactGroupResourceName) }}</span>
-        <span *ngIf="!(getGroupName(membership.contactGroupMembership.contactGroupResourceName) === 'National Staff' || getGroupName(membership.contactGroupMembership.contactGroupResourceName) === 'Core team')" class="small">{{ getGroupName(membership.contactGroupMembership.contactGroupResourceName) }}</span>
-      </p>
-    </td>
-    <td>
-      <button class="mr-2 btn btn-sm btn-danger" [disabled]="loadingDelete === person.resourceName" type="button" (click)="deletePersonFromContacts(userEmail, person.resourceName)">
-        <span *ngIf="loadingDelete === person.resourceName" class="actn-loader"></span>
-        <span *ngIf="loadingDelete !== person.resourceName">Delete</span>
-      </button>
-    </td>
-  </tr>
+    <tr *ngFor="let person of contacts">
+        <td>
+            <p *ngIf="person.photos[0]">
+                <img src="{{ person.photos[0].url}}" class="img-fluid">
+            </p>
+        </td>
+        <td>
+            <p *ngFor="let name of person.names" class="font-weight-light">
+                {{ name.displayNameLastFirst}}
+            </p>
+        </td>
+        <td>
+            <p class="mb-2" *ngFor="let email of person.emailAddresses">
+                <span [ngClass]="{ 'font-weight-bold': email.metadata.primary}">{{ email.value}}</span>
+                <br>
+                <small class="badge"
+                       [ngClass]="{ 'badge-primary': email.type === 'home', 'badge-danger': email.type === 'other'}"> {{ email.formattedType }}</small>
+            </p>
+        </td>
+        <td>
+            <p class="mb-2" *ngFor="let phoneNumber of person.phoneNumbers">
+                <span [ngClass]="{ 'font-weight-bold': phoneNumber.metadata.primary}">{{ phoneNumber.value }}</span>
+                <br>
+                <small class="badge"
+                       [ngClass]="{ 'badge-primary': phoneNumber.type === 'mobile', 'badge-warning': phoneNumber.type === 'work', 'badge-info': phoneNumber.type === 'home', 'badge-danger': phoneNumber.type === 'other'}"> {{ phoneNumber.formattedType}}</small>
+            </p>
+        </td>
+        <td>
+            <p class="my-0" *ngFor="let membership of person.memberships">
+                <span *ngIf="getGroupName(membership.contactGroupMembership.contactGroupResourceName) === 'National Staff' || getGroupName(membership.contactGroupMembership.contactGroupResourceName) === 'Core team'"
+                      class="badge badge-success">{{ getGroupName(membership.contactGroupMembership.contactGroupResourceName) }}</span>
+                <span *ngIf="!(getGroupName(membership.contactGroupMembership.contactGroupResourceName) === 'National Staff' || getGroupName(membership.contactGroupMembership.contactGroupResourceName) === 'Core team')"
+                      class="small">{{ getGroupName(membership.contactGroupMembership.contactGroupResourceName) }}</span>
+            </p>
+        </td>
+        <td>
+            <button class="mr-2 btn btn-sm btn-danger" [disabled]="loadingDelete === person.resourceName" type="button"
+                    (click)="deletePersonFromContacts(userEmail, person.resourceName)">
+                <span *ngIf="loadingDelete === person.resourceName" class="actn-loader"></span>
+                <span *ngIf="loadingDelete !== person.resourceName">Delete</span>
+            </button>
+        </td>
+    </tr>
 </table>
 
 <div class="alert alert-warning" *ngIf="!loading && !contacts">Contacts are empty</div>
 
 <div *ngIf="loading && !submitted">
-  <div class="loader-placeholder">
-    <div class="row">
-      <!-- loader -->
-        <div class="page-loader"></div>
-      <!-- /loader -->
+    <div class="loader-placeholder">
+        <div class="row">
+            <!-- loader -->
+            <div class="page-loader"></div>
+            <!-- /loader -->
+        </div>
     </div>
-  </div>
 </div>
