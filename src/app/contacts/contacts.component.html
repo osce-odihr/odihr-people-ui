@@ -5,14 +5,15 @@
 <div class="row mb-3">
     <div class="col-5">
         <div class="card">
-            <div class="card-body">
+            <div class="card-body pr-0">
                 <h5 i18 class="mb-3">Contact Groups</h5>
-                <div class="row small">
+                <div class="row small mb-3">
                     <div class="col-6 row" *ngFor="let group of filterEmptyGroup()">
-                        <div class="col-8">{{  group.formattedName  }}</div>
+                        <div class="col-8" [ngClass]="{'font-weight-bold' : isManagedGroup(group.formattedName)}">{{  group.formattedName  }}</div>
                         <div class="col-4 text-nowrap">{{ group.memberCount }}</div>
                     </div>
                 </div>
+                <p class="text-muted small">* managed groups are in <b>bold</b></p>
             </div>
         </div>
     </div>
@@ -100,7 +101,7 @@
         <td>
             <p class="my-0" *ngFor="let membership of person.memberships">
                 <span *ngIf="isManagedGroup(getGroupName(membership.contactGroupMembership.contactGroupResourceName))"
-                      class="badge badge-success">{{ getGroupName(membership.contactGroupMembership.contactGroupResourceName) }}</span>
+                      class="font-weight-bold">{{ getGroupName(membership.contactGroupMembership.contactGroupResourceName) }}</span>
                 <span *ngIf="!(isManagedGroup(getGroupName(membership.contactGroupMembership.contactGroupResourceName)))"
                       class="small">{{ getGroupName(membership.contactGroupMembership.contactGroupResourceName) }}</span>
             </p>
