@@ -8,9 +8,9 @@
             <div class="card-body">
                 <h5 i18 class="mb-3">Contact Groups</h5>
                 <div class="row small">
-                    <div class="col-6 row" *ngFor="let group of contactGroups">
-                        <div class="col-9">{{  group.formattedName  }}</div>
-                        <div class="col-3">{{ group.memberCount }}</div>
+                    <div class="col-6 row" *ngFor="let group of filterEmptyGroup()">
+                        <div class="col-8">{{  group.formattedName  }}</div>
+                        <div class="col-4 text-nowrap">{{ group.memberCount }}</div>
                     </div>
                 </div>
             </div>
@@ -99,9 +99,9 @@
         </td>
         <td>
             <p class="my-0" *ngFor="let membership of person.memberships">
-                <span *ngIf="getGroupName(membership.contactGroupMembership.contactGroupResourceName) === 'National Staff' || getGroupName(membership.contactGroupMembership.contactGroupResourceName) === 'Core team'"
+                <span *ngIf="isManagedGroup(getGroupName(membership.contactGroupMembership.contactGroupResourceName))"
                       class="badge badge-success">{{ getGroupName(membership.contactGroupMembership.contactGroupResourceName) }}</span>
-                <span *ngIf="!(getGroupName(membership.contactGroupMembership.contactGroupResourceName) === 'National Staff' || getGroupName(membership.contactGroupMembership.contactGroupResourceName) === 'Core team')"
+                <span *ngIf="!(isManagedGroup(getGroupName(membership.contactGroupMembership.contactGroupResourceName)))"
                       class="small">{{ getGroupName(membership.contactGroupMembership.contactGroupResourceName) }}</span>
             </p>
         </td>

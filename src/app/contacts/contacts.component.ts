@@ -7,6 +7,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ContactGroup} from '../_models/contact-group';
 import {ResponseContacts} from '../_models/response-contacts';
+import {User} from '../_models/user';
 
 @Component({
     selector: 'app-contacts',
@@ -66,6 +67,25 @@ export class ContactsComponent implements OnInit {
         return this.contactGroupsIndex.get(resourceName);
     }
 
+    filterEmptyGroup() {
+        const result: ContactGroup[] = [];
+
+        for (const index in this.contactGroups) {
+            if (this.contactGroups[index].memberCount > 0) {
+                result.push(this.contactGroups[index]);
+            }
+        }
+
+        return result;
+    }
+
+    isManagedGroup(groupName: string): boolean {
+        if (groupName === 'National Staff' || groupName === 'Core team' || groupName === 'LTOs') {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     onSubmit() {
         this.submitted = true;
