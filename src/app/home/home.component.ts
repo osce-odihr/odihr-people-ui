@@ -14,6 +14,7 @@ import {DOCUMENT} from '@angular/common';
 })
 export class HomeComponent implements OnInit {
     loading = false;
+    loadingDeleteAll = false;
     submitted = false;
     users: User[];
     units: OrgUnit[];
@@ -65,29 +66,43 @@ export class HomeComponent implements OnInit {
         }
 
         this.loading = true;
-        this.uploadEmails = [];
-
-        const elements = document.getElementsByName('massUploadUser');
-        // tslint:disable-next-line:prefer-for-of
-        for (let i = 0; i < elements.length; i++) {
-            // @ts-ignore
-            if (elements[i].type === 'checkbox') {
-                // @ts-ignore
-                if (elements[i].checked) {
-                    // @ts-ignore
-                    const userEmail = elements[i].value;
-
-                    this.uploadEmails.push(userEmail);
-                }
-            }
-        }
+        this.uploadEmails = this.getUploadEmails();
         this.uploadEmailIndex = 0;
 
         this.uploadContactsNextUser();
     }
 
+    deleteALLFromContacts() {
+        this.loadingDeleteAll = true;
+        this.uploadEmails = this.getUploadEmails();
+        this.uploadEmailIndex = 0;
+
+        this.deleteContactsNextUser();
+    }
+
+    deleteContactsNextUser() {
+        this.displayRequestContactsStatus();
+
+        const email = this.uploadEmails[this.uploadEmailIndex++];
+
+        if (email === null) {
+            this.loading = false;
+            return null;
+        }
+
+        this.userService.deleteAllFromContacts(email)
+            .pipe(first())
+            .subscribe(
+                apiResponse => {
+                    this.deleteContactsNextUser();
+                },
+                error => {
+                    this.loadingDeleteAll = false;
+                });
+    }
+
     uploadContactsNextUser() {
-        this.displayUploadContactsStatus();
+        this.displayRequestContactsStatus();
 
         const email = this.uploadEmails[this.uploadEmailIndex++];
 
@@ -107,7 +122,7 @@ export class HomeComponent implements OnInit {
                 });
     }
 
-    displayUploadContactsStatus() {
+    displayRequestContactsStatus() {
         let log = '';
 
         // tslint:disable-next-line:forin
@@ -157,6 +172,27 @@ export class HomeComponent implements OnInit {
         for (const index in this.users) {
             if (this.users[index].orgUnitPath === unit) {
                 result.push(this.users[index]);
+            }
+        }
+
+        return result;
+    }
+
+    private getUploadEmails(): string[] {
+        const result = [];
+
+        const elements = document.getElementsByName('massUploadUser');
+        // tslint:disable-next-line:prefer-for-of
+        for (let i = 0; i < elements.length; i++) {
+            // @ts-ignore
+            if (elements[i].type === 'checkbox') {
+                // @ts-ignore
+                if (elements[i].checked) {
+                    // @ts-ignore
+                    const userEmail = elements[i].value;
+
+                    result.push(userEmail);
+                }
             }
         }
 

@@ -174,10 +174,22 @@
                </div>
            </div>
 
-           <div class="col-4">
-               <div class="card" *ngIf="loading">
+           <div class="col-2">
+               <div class="card">
                    <div class="card-body">
-                       <h5 i18 class="mb-3">Upload Log</h5>
+                       <button [disabled]="loadingDeleteAll" class="btn btn-danger btn-block"
+                               (click)="deleteALLFromContacts()">
+                           <span *ngIf="loadingDeleteAll" class="actn-loader"></span>
+                           <span *ngIf="!loadingDeleteAll">Delete ALL Managed</span>
+                       </button>
+                   </div>
+               </div>
+           </div>
+
+           <div class="col-4" *ngIf="loading || loadingDeleteAll">
+               <div class="card">
+                   <div class="card-body">
+                       <h5 i18 class="mb-3">Requests Query</h5>
                        <div>{{ uploadLog }}</div>
                    </div>
                </div>
