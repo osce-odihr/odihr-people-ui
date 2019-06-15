@@ -17,7 +17,7 @@
             <div class="tab-pane fade" id="{{ unit.name }}" role="tabpanel" [attr.aria-labelledby]="unit.name + '-tab'"
                  *ngFor="let unit of units; let first = first" [ngClass]="{'active show': first}">
 
-                <!--  National Staff tab     -->
+                <!--  Org Unit tab     -->
                 <table class="table table-hover">
                     <tr>
                         <th width="30%">Email</th>
@@ -31,8 +31,10 @@
 
                     <tr *ngFor="let user of filterUser('/' + unit.name) ">
                         <td>
-                            {{ user.primaryEmail }}
-                            <span class="badge badge-primary" *ngIf="user.isAdmin === true">ADMIN</span>
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" name="massUploadUser" id="user-{{ user.primaryEmail }}" value="{{ user.primaryEmail }}">
+                                <label class="custom-control-label" for="user-{{ user.primaryEmail }}">{{ user.primaryEmail }}</label>
+                            </div>
                         </td>
                         <td class="small">
                             <p class="m-0">
@@ -57,7 +59,7 @@
                         </td>
 
                         <td class="small">
-                            <p class="m-0"> {{ user.changePasswordAtNextLogin }}</p>
+                            <p class="m-0">{{ user.changePasswordAtNextLogin }}</p>
                         </td>
                         <td>
                             <button class="mr-2 btn btn-sm btn-outline-primary" type="button"
@@ -68,7 +70,13 @@
                     </tr>
                 </table>
 
+                <button class="btn btn-link" (click)="selectAllCheckbox('/' + unit.name);">
+                    <span>Select All {{ unit.description }}</span>
+                </button>
 
+                <button class="btn btn-link" (click)="deselectAllCheckbox();">
+                    <span>Deselect All</span>
+                </button>
             </div>
             <div class="tab-pane fade" id="other" role="tabpanel" aria-labelledby="other-tab">
 
@@ -87,8 +95,10 @@
 
                     <tr *ngFor="let user of filterUser('/') ">
                         <td>
-                            {{ user.primaryEmail }}
-                            <span class="badge badge-primary" *ngIf="user.isAdmin === true">ADMIN</span>
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" name="massUploadUser" id="user-{{ user.primaryEmail }}" value="{{ user.primaryEmail }}">
+                                <label class="custom-control-label" for="user-{{ user.primaryEmail }}">{{ user.primaryEmail }}</label>
+                            </div>
                         </td>
                         <td class="small">
                             <p class="m-0">
@@ -124,9 +134,55 @@
                     </tr>
                 </table>
 
+                <button class="btn btn-link" (click)="selectAllCheckbox('/');">
+                    <span>Select All Other</span>
+                </button>
+
+                <button class="btn btn-link" (click)="deselectAllCheckbox();">
+                    <span>Deselect All</span>
+                </button>
             </div>
         </div>
 
+       <div class="row mb-3">
+           <div class="col-6">
+               <div class="card">
+                   <div class="card-body">
+                       <h5 i18 class="mb-3">Mass Upload Contacts</h5>
+                       <form [formGroup]="contactsMassUploadForm" (ngSubmit)="onSubmit()" method="post">
+                           <div class="form-group row">
+                               <label for="contactsFileUrl" class="col-5" i18n>Google Sheet ID</label>
+                               <input type="text" id="contactsFileUrl" formControlName="contactsFileUrl"
+                                      class="form-control col-7"
+                                      [ngClass]="{ 'is-invalid': submitted && contactsMassUploadForm.controls.contactsFileUrl.errors }"/>
+                               <div *ngIf="submitted && contactsMassUploadForm.controls.contactsFileUrl.errors"
+                                    class="invalid-feedback col-12">
+                                   <div *ngIf="contactsMassUploadForm.controls.contactsFileUrl.errors.required" i18n>File URL is
+                                       required
+                                   </div>
+                               </div>
+                           </div>
+
+                           <div class="form-group">
+                               <button [disabled]="loading" id="login-btn" class="btn btn-primary btn-block">
+                                   <span *ngIf="loading" class="actn-loader"></span>
+                                   <span *ngIf="!loading">Submit Upload</span>
+                               </button>
+                           </div>
+                       </form>
+                   </div>
+               </div>
+           </div>
+
+           <div class="col-4">
+               <div class="card" *ngIf="loading">
+                   <div class="card-body">
+                       <h5 i18 class="mb-3">Upload Log</h5>
+                       <div>{{ uploadLog }}</div>
+                   </div>
+               </div>
+           </div>
+       </div>
     </div>
 </div>
 
